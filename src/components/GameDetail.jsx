@@ -15,7 +15,7 @@ export function GameDetail({ data }) {
         );
     }
 
-    const { fixture, league, teams, goals, statistics, lineups } = match;
+    const { fixture, league, teams, goals, statistics, lineups, events } = match;
 
     return (
         <div className="min-h-screen bg-black px-4 py-8 max-w-2xl mx-auto text-neutral-100">
@@ -41,6 +41,8 @@ export function GameDetail({ data }) {
             </div>
 
             <div className="text-center text-xs text-neutral-500 mb-8">{fixture.status.long}</div>
+
+            <EventsList events={events} homeTeamId={teams.home.id} />
 
             {statistics && statistics.length > 0 && (
                 <div className="mb-8">
@@ -80,6 +82,36 @@ export function GameDetail({ data }) {
                     </div>
                 </div>
             )}
+        </div>
+    );
+}
+
+function EventsList({ events, homeTeamId }) {
+    if (!events || events.length === 0) return null;
+
+    const sorted = [...events].sort((a, b) => a.time.elapsed - b.time.elapsed);
+
+    return (
+        <div className="mb-8">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-400 mb-3">Match Events</h3>
+            <ul className="space-y-2">
+                {sorted.map((event, i) => (
+                    <li
+                        key={i}
+                        className={`flex items-center gap-3 text-sm ${event.team.id === homeTeamId ? 'justify-start' : 'justify-end flex-row-reverse text-right'
+                            }`}
+                    >
+                        <span className="font-mono text-xs text-neutral-500 w-10 shrink-0">
+                            {event.time.elapsed}{event.time.extra ? `+${event.time.extra}` : ''}'
+                        </span>
+                        <span>{event.type === 'Goal' ? '⚽' : event.type === 'Card' ? '🟨' : '🔄'}</span>
+                        <span className="text-neutral-200">{event.player?.name}</span>
+                        {event.assist?.name && (
+                            <span className="text-neutral-500 text-xs">(assist: {event.assist.name})</span>
+                        )}
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }

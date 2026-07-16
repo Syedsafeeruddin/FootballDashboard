@@ -37,7 +37,7 @@ export function useGames() {
                 });
             }
             pollLive();
-        }, 5000);
+        }, 15000);
 
         return () => clearInterval(intervalId);
     }, []);
