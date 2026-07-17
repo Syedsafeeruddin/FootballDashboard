@@ -1,9 +1,9 @@
-import { GameCard } from "../components/GameCard.jsx";
+import { GameCard } from '../components/GameCard.jsx';
 
 export function Dashboard({ data, loading, error }) {
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-neutral-400 text-sm">
+            <div className="min-h-screen bg-pitch-black flex items-center justify-center text-sage text-sm font-body">
                 Loading matches...
             </div>
         );
@@ -11,54 +11,44 @@ export function Dashboard({ data, loading, error }) {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-red-400 text-sm">
-                {error.message || "Failed to load matches."}
+            <div className="min-h-screen bg-pitch-black flex items-center justify-center text-live-red text-sm font-body">
+                {error.message || 'Failed to load matches.'}
             </div>
         );
     }
 
     const sections = [
-        { title: "Live", matches: data.live, empty: "No live matches." },
-        {
-            title: "Upcoming",
-            matches: data.upcoming,
-            empty: "No upcoming matches.",
-        },
-        {
-            title: "Finished",
-            matches: data.finished,
-            empty: "No finished matches.",
-        },
-        { 
-            title: "Other", 
-            matches: data.others, 
-            empty: "No other matches." 
-        },
+        { title: 'Live', matches: data.live, empty: 'No live matches.' },
+        { title: 'Upcoming', matches: data.upcoming, empty: 'No upcoming matches.' },
+        { title: 'Finished', matches: data.finished, empty: 'No finished matches.' },
     ];
 
     return (
-        <div className="min-h-screen bg-black px-4 py-8 max-w-3xl mx-auto">
-            <h1 className="text-xl font-semibold text-white mb-8">Matchday</h1>
+        <div className="min-h-screen bg-pitch-black">
+            <div className="hero-floodlight px-4 py-12">
+                <div className="max-w-3xl mx-auto">
+                    <p className="font-mono text-xs uppercase tracking-widest text-floodlight mb-2">Matchday</p>
+                    <h1 className="font-display text-4xl font-bold text-chalk">Today's Fixtures</h1>
+                </div>
+            </div>
 
-            {sections.map(({ title, matches, empty }) => (
-                <section key={title} className="mb-10">
-                    <div className="flex items-center gap-2 mb-3">
-                        <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
-                            {title}
-                        </h2>
-                        <span className="text-xs text-neutral-600">{matches.length}</span>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {matches.length > 0 ? (
-                            matches.map((match) => (
-                                <GameCard key={match.fixture.id} match={match} />
-                            ))
-                        ) : (
-                            <p className="text-sm text-neutral-600 col-span-full">{empty}</p>
-                        )}
-                    </div>
-                </section>
-            ))}
+            <div className="max-w-3xl mx-auto px-4 py-8">
+                {sections.map(({ title, matches, empty }) => (
+                    <section key={title} className="mb-10">
+                        <div className="flex items-center gap-2 mb-3">
+                            <h2 className="font-display text-xs font-semibold uppercase tracking-wide text-sage">{title}</h2>
+                            <span className="font-mono text-xs text-turf-line">{matches.length}</span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {matches.length > 0 ? (
+                                matches.map(match => <GameCard key={match.fixture.id} match={match} />)
+                            ) : (
+                                <p className="text-sm text-turf-line col-span-full font-body">{empty}</p>
+                            )}
+                        </div>
+                    </section>
+                ))}
+            </div>
         </div>
     );
 }

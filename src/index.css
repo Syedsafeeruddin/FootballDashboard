@@ -1,1 +1,77 @@
 @import "tailwindcss";
+
+:root {
+  --pitch-black: #070f0b;
+  --turf: #10241a;
+  --turf-line: #1f3f2c;
+  --chalk: #f3f1ea;
+  --sage: #8aa290;
+  --floodlight: #f5c518;
+  --live-red: #e6484f;
+
+  --font-display: "Rajdhani", "Arial Narrow", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+}
+
+body {
+  margin: 0;
+  background: var(--pitch-black);
+  color: var(--chalk);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Signature element: a CSS-only floodlight effect — dark turf gradient
+   with two angled "light beam" cones cutting across it, plus a faint
+   pitch-line pattern. No photo, fully custom, matches the scoreboard
+   language used throughout the rest of the app. */
+.hero-floodlight {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse 60% 80% at 15% -10%,
+      rgba(245, 197, 24, 0.35),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 80% at 85% -10%,
+      rgba(245, 197, 24, 0.28),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--turf) 0%, var(--pitch-black) 100%);
+}
+
+.hero-floodlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(243, 241, 234, 0.04) 0px,
+    rgba(243, 241, 234, 0.04) 1px,
+    transparent 1px,
+    transparent 64px
+  );
+  pointer-events: none;
+}
+
+.hero-floodlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 100% 60% at 50% 100%,
+    rgba(7, 15, 11, 0.9),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
